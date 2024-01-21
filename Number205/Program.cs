@@ -33,16 +33,29 @@ namespace Number205
         {
             var palindromeGroups = new Dictionary<int, List<int>>();
 
-            for (int i = 100; i <= 1000000000; i++)
+            for (int i = 101; i <= 1000000000; i += 2)
             {
+                int firstDigit = int.Parse(Convert.ToString(i.ToString()[0]));
+                if (firstDigit % 2 == 0 || firstDigit == 5) { 
+                    i += (int)Math.Pow(10, i.ToString().Length - 1); 
+                    continue; 
+                };
+                if (i % 10 == 0) { 
+                    i++; 
+                    continue; 
+                };
                 if (IsPalindrome(i))
                 {
-                    int product = DigitProduct(i);
-                    if (!palindromeGroups.ContainsKey(product))
+                    if (IsPrime(i))
                     {
-                        palindromeGroups[product] = new List<int>();
+                        int product = DigitProduct(i);
+                        if (!palindromeGroups.ContainsKey(product))
+                        {
+                            palindromeGroups[product] = new List<int>();
+                        }
+                        palindromeGroups[product].Add(i);
+                        Console.WriteLine(i);
                     }
-                    palindromeGroups[product].Add(i);
                 }
             }
 
@@ -56,6 +69,19 @@ namespace Number205
             {
                 Console.WriteLine(number);
             }
+            Console.ReadKey();
+        }
+
+        private static bool IsPrime(int number)
+        {
+            for (int i = 2; i <= Math.Sqrt(number); i++)
+            {
+                if (number % i == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
